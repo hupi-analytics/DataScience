@@ -1,8 +1,12 @@
-name := "DataScienceTools"
+name := "DataScience"
 
 version := "1.0"
 
 scalaVersion := "2.10.4"
+
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
+
+
 
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % "1.5.0" % "provided",
@@ -15,12 +19,12 @@ pomIncludeRepository := { _ => false }
 
 licenses := Seq("BSD-style" -> url("http://www.opensource.org/licenses/bsd-license.php"))
 
-homepage := Some(url("http://example.com"))
+homepage := Some(url("http://hupi.fr"))
 
 scmInfo := Some(
   ScmInfo(
     url("https://github.com/hupi-analytics/DataScience"),
-    "scm:git@github.com:hupi-analytics/DataScience"
+    "scm:git@github.com:hupi-analytics/DataScience.git"
   )
 )
 
@@ -29,6 +33,18 @@ developers := List(
     id    = "bobba",
     name  = "bobba surendranath chowdary",
     email = "surendra.bobba@hupi.fr",
-    url   = url("http://hupi.fr")
+    url   = url("http://github.com/domitian")
   )
 )
+
+publishMavenStyle := true
+
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
+
+publishArtifact in Test := false
