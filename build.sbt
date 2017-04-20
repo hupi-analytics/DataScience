@@ -1,6 +1,8 @@
 name := "DataScience"
 
-version := "1.0"
+version := "1.0.1"
+
+organization := "com.github.hupi"
 
 scalaVersion := "2.10.4"
 
@@ -14,6 +16,9 @@ libraryDependencies ++= Seq(
 )
 
 useGpg := true
+
+spAppendScalaVersion := true
+
 
 pomIncludeRepository := { _ => false }
 
