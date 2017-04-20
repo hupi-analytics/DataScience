@@ -4,7 +4,7 @@ import org.apache.spark.mllib.stat.{MultivariateStatisticalSummary, Statistics}
 import org.apache.commons.math3.stat.descriptive._
 import org.apache.commons.math3.distribution._
 
-package org.hupi.datascience_tools {
+package com.github.hupi.datascience {
  
   object Outliers {
   
