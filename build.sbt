@@ -1,12 +1,11 @@
-name := "DataScience"
+name := "datascience"
 
-version := "1.0.1"
+version := "1.0.4"
 
-organization := "com.github.hupi"
+organization := "com.github.hupi-analytics"
 
 scalaVersion := "2.10.4"
 
-addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
 
 
 
@@ -16,8 +15,6 @@ libraryDependencies ++= Seq(
 )
 
 useGpg := true
-
-spAppendScalaVersion := true
 
 
 pomIncludeRepository := { _ => false }

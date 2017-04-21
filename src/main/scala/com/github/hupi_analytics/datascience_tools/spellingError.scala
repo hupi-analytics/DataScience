@@ -2,7 +2,7 @@ import org.apache.commons.lang3.StringUtils.stripAccents
 import scala.collection.mutable.ListBuffer
 import org.apache.spark.SparkContext
 
-package com.github.hupi.datascience {
+package com.github.hupi_analytics.datascience {
 
 	object SpellingError {
 	

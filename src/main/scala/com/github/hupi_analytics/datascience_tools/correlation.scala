@@ -23,7 +23,7 @@ import org.apache.commons.math3.distribution._
 
 // For input Data Frame, make sure that all of column is String to apply these functions
 
-package com.github.hupi.datascience {
+package com.github.hupi_analytics.datascience {
 
 	object Correlation {
 		// TEST PEARSON
