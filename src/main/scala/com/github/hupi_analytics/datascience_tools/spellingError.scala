@@ -4,7 +4,7 @@ import org.apache.spark.SparkContext
 
 package com.github.hupi_analytics.datascience {
 
-	object SpellingError {
+	class SpellingError(pathMap: Map[String, String]) extends java.io.Serializable {
 	
 		// Fonction qui calcule le nombre de récurrences dans le dictionnaire
 		def dicoWithNumbers(base : org.apache.spark.rdd.RDD[String]) : org.apache.spark.rdd.RDD[(String, Int)] = {
@@ -14,14 +14,7 @@ package com.github.hupi_analytics.datascience {
 		}
 
 		// Fonction qui cherche le bon dictionnaire
-		def findDictionary (secteur : String, sc: SparkContext) : org.apache.spark.rdd.RDD[(String, Int)] = secteur match {
-		  case "droit" => dicoWithNumbers(sc.textFile("hdfs://hupi.node1.pro.hupi.loc/user/helene.nguyen/SpellingError/codeCivil.txt"))
-		  case "economie" | "finance" => dicoWithNumbers(sc.textFile("hdfs://hupi.node1.pro.hupi.loc/user/helene.nguyen/SpellingError/projetLoiFinance2016.txt"))
-		  case "informatique" => dicoWithNumbers(sc.textFile("hdfs://hupi.node1.pro.hupi.loc/user/helene.nguyen/SpellingError/introInformatique.txt"))
-		  case "litterature" => dicoWithNumbers(sc.textFile("hdfs://hupi.node1.pro.hupi.loc/user/helene.nguyen/SpellingError/litteratureFrancaise.txt"))
-		  case "sante" => dicoWithNumbers(sc.textFile("hdfs://hupi.node1.pro.hupi.loc/user/helene.nguyen/SpellingError/quotidien/sante.txt"))
-		  case _ => dicoWithNumbers(sc.textFile("hdfs://hupi.node1.pro.hupi.loc/user/helene.nguyen/SpellingError/quotidien/Propre.csv"))
-		}
+		def findDictionary (secteur : String, sc: SparkContext) : Array[(String, Int)] = dicoWithNumbers(sc.textFile(pathMap(secteur))).collect()
 
 		val alphabet = "abcdefghijklmnopqrstuvwxyz"
 		val n = alphabet.length
@@ -92,7 +85,7 @@ package com.github.hupi_analytics.datascience {
 		  }
 		  val newList1 = newList.toList.flatten.distinct
 		  // On cherche les mots qui sont dans le dictionnaire
-		  val j = List(newList1, dico.map(l => l._1).collect().toList)
+		  val j = List(newList1, dico.map(l => l._1).toList)
 		  val finalList = j.reduceLeft(_.intersect(_))
 		  return finalList
 		}
@@ -120,7 +113,7 @@ package com.github.hupi_analytics.datascience {
 		val listeError = new ListBuffer[String]()
 		def errorList (input : Array[String], secteur : String = "quotidien", sc : SparkContext) : List[String] = {
 		  val dico = findDictionary(secteur, sc) 
-		  val words = dico.map(l => l._1).collect()
+		  val words = dico.map(l => l._1)
 		  for (i <- 0 to input.length-1) {
 			if (!words.contains(input(i))) {
 			  listeError += input(i)
@@ -141,7 +134,7 @@ package com.github.hupi_analytics.datascience {
 		def correctWord(word : String, secteur : String = "quotidien", sc : SparkContext) : String = {
 		  // On cherche le bon dictionnaire
 		  val dico = findDictionary(secteur, sc)
-		  val words = dico.map(l => l._1).collect()
+		  val words = dico.map(l => l._1)
 		  // On applique la fonction de traitement de mot
 		  val mot = neatWord(word)
 		  
@@ -162,12 +155,12 @@ package com.github.hupi_analytics.datascience {
 			
 			val listeEff1 = new ListBuffer[Array[(String, Int)]]()
 			for (i <- 0 to motTransforme1.length - 1) {
-			  val effectif = dico.filter(l => l._1 == motTransforme1(i)).map(l => (l._1, l._2)).collect()
+			  val effectif = dico.filter(l => l._1 == motTransforme1(i)).map(l => (l._1, l._2))
 			  listeEff1 += effectif
 			}
 			val listeEff2 = new ListBuffer[Array[(String, Int)]]()
 			for (i <- 0 to motTransforme2.length - 1) {
-			  val effectif = dico.filter(l => l._1 == motTransforme2(i)).map(l => (l._1, l._2)).collect()
+			  val effectif = dico.filter(l => l._1 == motTransforme2(i)).map(l => (l._1, l._2))
 			  listeEff2 += effectif
 			}
 			if (listeEff1.length != 0) {

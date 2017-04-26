@@ -1,12 +1,10 @@
 name := "datascience"
 
-version := "1.0.4"
+version := "1.0.7"
 
 organization := "com.github.hupi-analytics"
 
 scalaVersion := "2.10.4"
-
-
 
 
 libraryDependencies ++= Seq(
